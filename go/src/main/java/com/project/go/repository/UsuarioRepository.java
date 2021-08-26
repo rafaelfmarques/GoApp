@@ -15,7 +15,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
     @Query("SELECT u FROM Usuario u INNER JOIN u.endereco e WHERE e.logradouro=?1")
     public Usuario buscaEnderecoPorNome(String endereco);
 
-    @Query("SELECT u FROM Usuario u INNER JOIN u.personalTrainer pt WHERE pt.nome=?1")
-    public Usuario buscaPersonalTrainerPorNome(String personalTrainer);
+    @Query("SELECT u FROM Usuario u INNER JOIN u.personalTrainer pt WHERE pt.email=?1")
+    public Usuario buscaPersonalTrainerPorEmail(String personalTrainer);
 
 }

@@ -19,8 +19,11 @@ public class PersonalTrainer {
     @Column(name = "personal_id")
     private Long id;
     
-    @Column(unique = true, name = "personal_nome")
+    @Column(name = "personal_nome")
     private String nome;
+
+    @Column(unique = true, name = "personal_email")
+    private String email;
     
     @Column(name = "personal_formacao")
     private String formacao;
@@ -43,6 +46,14 @@ public class PersonalTrainer {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getFormacao() {
