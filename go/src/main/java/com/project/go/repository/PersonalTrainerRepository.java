@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PersonalTrainerRepository extends JpaRepository<PersonalTrainer, Long> {
     
-    public PersonalTrainer findByNome(String personalTrainer);
-
+    public PersonalTrainer findByEmailPersonal(String emailPersonal);
 }

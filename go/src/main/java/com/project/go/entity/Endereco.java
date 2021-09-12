@@ -10,6 +10,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.project.go.JsonConfigure.View;
+
 @Entity
 @Table(name = "endereco")
 public class Endereco {
@@ -19,25 +23,31 @@ public class Endereco {
     @Column(name = "end_id")
     private Long id;
 
+    @JsonView(View.Usuario.class)
     @Column(name = "end_logradouro")
     private String logradouro;
 
+    @JsonView(View.Usuario.class)
     @Column(name = "end_numero")
     private String numero;
 
+    @JsonView(View.Usuario.class)
     @Column(name = "end_bairro")
     private String bairro;
 
+    @JsonView(View.Usuario.class)
     @Column(name = "end_cidade")
     private String cidade;
 
+    @JsonView(View.Usuario.class)
     @Column(name = "end_complemento")
     private String complemento;
 
     @ManyToOne
     private Uf uf;
 
-    @OneToOne
+    @JsonIgnore
+    @OneToOne(mappedBy = "endereco")
     private Usuario usuario;
 
 
