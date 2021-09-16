@@ -10,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.project.go.JsonConfigure.View;
+
 
 @Entity
 @Table(name = "uf")
@@ -19,9 +23,11 @@ public class Uf {
     @Column(name = "uf_id")
     private Long id;
 
+    @JsonView(View.Usuario.class)
     @Column(unique = true, name = "uf_nome")
-    private String nome;
+    private String ufNome;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "uf")
     private Set<Endereco> endereco;
 
@@ -35,11 +41,11 @@ public class Uf {
     }
 
     public String getNome() {
-        return this.nome;
+        return this.ufNome;
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.ufNome = nome;
     }
 
     public Set<Endereco> getEndereco() {

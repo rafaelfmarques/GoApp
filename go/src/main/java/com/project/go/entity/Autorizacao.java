@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.project.go.JsonConfigure.View;
+
 @Entity
 @Table(name = "autorizacao")
 public class Autorizacao {
@@ -18,9 +21,11 @@ public class Autorizacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonView({View.Usuario.class, View.Autorizacao.class})
     @Column(name = "aut_nome")
-    private String nome;
+    private String nomeAut;
 
+    @JsonView(View.Autorizacao.class)
     @ManyToMany(mappedBy = "autorizacao")
     private Set<Usuario> usuario;
 
@@ -34,11 +39,11 @@ public class Autorizacao {
     }
 
     public String getNome() {
-        return this.nome;
+        return this.nomeAut;
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nomeAut = nome;
     }
 
     public Set<Usuario> getUsuario() {

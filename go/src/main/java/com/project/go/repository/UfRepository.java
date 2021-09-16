@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UfRepository extends JpaRepository<Uf, Long> {
     
-    public Uf findByNome(String nome);
+    public Uf findByUfNome(String ufNome);
 
  
 

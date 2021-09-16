@@ -10,17 +10,21 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.project.go.JsonConfigure.View;
+
 @Entity
 @Table(name = "dias_semana")
 public class DiasSemana {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, name = "dias_semana_id")
+    @Column(name = "dias_semana_id")
     private Long id;
 
-    @Column(unique = true, nullable = false, name = "dias_semana")
-    private String dias;
+    @JsonView(View.Agendamento.class)
+    @Column(unique = true, name = "dias_semana")
+    private String diasSemana;
 
     @OneToMany(mappedBy = "diasSemana")
     private Set<Agendamento> agendamento;
@@ -34,12 +38,12 @@ public class DiasSemana {
         this.id = id;
     }
 
-    public String getDias() {
-        return this.dias;
+    public String getDiasSemana() {
+        return this.diasSemana;
     }
 
-    public void setDias(String dias) {
-        this.dias = dias;
+    public void setDiasSemana(String diasSemana) {
+        this.diasSemana = diasSemana;
     }
 
     public Set<Agendamento> getAgendamento() {

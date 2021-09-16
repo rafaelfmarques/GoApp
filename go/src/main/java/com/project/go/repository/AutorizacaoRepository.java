@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AutorizacaoRepository extends JpaRepository<Autorizacao, Long> {
 
-    public Autorizacao findByNome(String autorizacao);
+    public Autorizacao findByNomeAut(String nomeAut);
 
 }
