@@ -1,6 +1,7 @@
 package com.project.go.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -8,15 +9,19 @@ import java.util.Optional;
 import com.project.go.entity.Autorizacao;
 import com.project.go.entity.Endereco;
 import com.project.go.entity.PersonalTrainer;
+import com.project.go.entity.Termos;
+import com.project.go.entity.TermosUsuario;
 import com.project.go.entity.Usuario;
 import com.project.go.entity.Uf;
 
 import com.project.go.repository.AutorizacaoRepository;
 import com.project.go.repository.EnderecoRepository;
 import com.project.go.repository.PersonalTrainerRepository;
+import com.project.go.repository.TermosRepository;
+import com.project.go.repository.TermosUsuarioRepository;
 import com.project.go.repository.UfRepository;
 import com.project.go.repository.UsuarioRepository;
-
+import com.project.go.exception.RegistroExistente;
 import com.project.go.exception.RegistroNaoEncontradoException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service("usuarioService")
 public class UsuarioServiceImpl implements UsuarioService {
-    
+
     @Autowired
     private PersonalTrainerRepository personalRepo;
 
@@ -41,24 +46,39 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepo;
 
+    @Autowired
+    private TermosRepository termoRepo;
+
+    @Autowired
+    private TermosUsuarioRepository termoUserRepo;
+
     @Transactional
     @Override
-    public Usuario criaUsuario(String nome, String email, String senha, LocalDate dataNascimento, String telefone, String userUnico, String personalTrainer, String autorizacao, String bairro, String cidade, String logradouro, String numero, String uf){
-        
+    public Usuario criaUsuario(String nome, String email, String senha, LocalDate dataNascimento, String telefone,
+            String userUnico, String personalTrainer, String autorizacao, String bairro, String cidade,
+            String logradouro, String numero, String uf, Float versao, Boolean consentimentoEndereco,
+            Boolean consentimentoContatoEmail, Boolean consentimentoContatoTel, LocalDateTime criacao,
+            LocalDateTime atualizado) {
+
         Uf pesquisaUf = ufRepo.findByUfNome(uf);
         Autorizacao aut = autRepo.findByNomeAut(autorizacao);
         PersonalTrainer personal = personalRepo.findByEmailPersonal(personalTrainer);
-        
-        if(personal == null){
+        Termos termoVersao = termoRepo.findByVersao(versao);
+
+        if (personal == null) {
             throw new RegistroNaoEncontradoException("Personal Trainer inexistente");
         }
-        if (aut == null ){
+        if (aut == null) {
             throw new RegistroNaoEncontradoException("Autorizacao inexistente");
         }
-        if (pesquisaUf == null){
+        if (pesquisaUf == null) {
             throw new RegistroNaoEncontradoException("UF inexistente");
         }
-        
+
+        if (termoVersao == null) {
+            throw new RegistroExistente("Versão do Termo não existe");
+        }
+
         Usuario usuario = new Usuario();
         usuario.setNome(nome);
         usuario.setDataNascimento(dataNascimento);
@@ -69,14 +89,24 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setTelefone(telefone);
         usuario.setAutorizacao(new HashSet<Autorizacao>());
         usuario.getAutorizacao().add(aut);
-        
+
+        TermosUsuario termosUsuario = new TermosUsuario();
+        termosUsuario.setAtualizado(atualizado);
+        termosUsuario.setConsentimentoContatoEmail(consentimentoContatoEmail);
+        termosUsuario.setConsentimentoContatoTel(consentimentoContatoTel);
+        termosUsuario.setConsentimentoEndereco(consentimentoEndereco);
+        termosUsuario.setCriacao(criacao);
+        termosUsuario.setUsuario(usuario);
+        termosUsuario.setTermos(termoVersao);
 
         Endereco end = new Endereco();
-		end.setBairro(bairro);
-		end.setCidade(cidade);
-		end.setLogradouro(logradouro);
-		end.setNumero(numero);
-		end.setUf(pesquisaUf);
+        end.setBairro(bairro);
+        end.setCidade(cidade);
+        end.setLogradouro(logradouro);
+        end.setNumero(numero);
+        end.setUf(pesquisaUf);
+
+        termoUserRepo.save(termosUsuario);
 
         usuario.setEndereco(end);
 
@@ -84,7 +114,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         usuarioRepo.save(usuario);
 
-		endRepo.save(end);
+        endRepo.save(end);
 
         return usuario;
     }
@@ -98,7 +128,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario buscaUsuarioPorId(Long id) {
         Optional<Usuario> usuarioOp = usuarioRepo.findById(id);
-        if (usuarioOp.isPresent()){
+        if (usuarioOp.isPresent()) {
             return usuarioOp.get();
         }
         throw new RegistroNaoEncontradoException("Usuário não encontrado");
@@ -106,58 +136,71 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario criaAdmin(String nome, String email, String senha, LocalDate dataNascimento, String telefone,
-            String userUnico, String personalTrainer, String autorizacao, String bairro, String cidade,
-            String logradouro, String numero, String uf) {
+            String userUnico, String autorizacao, String bairro, String cidade,
+            String logradouro, String numero, String uf, Float versao, Boolean consentimentoEndereco,
+            Boolean consentimentoContatoEmail, Boolean consentimentoContatoTel, LocalDateTime criacao,
+            LocalDateTime atualizado) {
+
+        Uf pesquisaUf = ufRepo.findByUfNome(uf);
+        Autorizacao aut = autRepo.findByNomeAut(autorizacao);
+        Termos termoVersao = termoRepo.findByVersao(versao);
+
+        if (aut == null) {
+            throw new RegistroNaoEncontradoException("Autorizacao inexistente");
+        }
+        if (pesquisaUf == null) {
+            throw new RegistroNaoEncontradoException("UF inexistente");
+        }
+
+        if (termoVersao == null){
+            throw new RegistroExistente("Versão do Termo não existe");
+
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setNome(nome);
+        usuario.setDataNascimento(dataNascimento);
+        usuario.setSenha(senha);
+        usuario.setEmail(email);
+        usuario.setUserUnico(userUnico);
+        usuario.setTelefone(telefone);
+        usuario.setAutorizacao(new HashSet<Autorizacao>());
+        usuario.getAutorizacao().add(aut);
+
+        TermosUsuario termosUsuario = new TermosUsuario();
+        termosUsuario.setAtualizado(atualizado);
+        termosUsuario.setConsentimentoContatoEmail(consentimentoContatoEmail);
+        termosUsuario.setConsentimentoContatoTel(consentimentoContatoTel);
+        termosUsuario.setConsentimentoEndereco(consentimentoEndereco);
+        termosUsuario.setCriacao(criacao);
+        termosUsuario.setUsuario(usuario);
+        termosUsuario.setTermos(termoVersao);
+
+        Endereco end = new Endereco();
+        end.setBairro(bairro);
+        end.setCidade(cidade);
+        end.setLogradouro(logradouro);
+        end.setNumero(numero);
+        end.setUf(pesquisaUf);
         
-                Uf pesquisaUf = ufRepo.findByUfNome(uf);
-                Autorizacao aut = autRepo.findByNomeAut(autorizacao);
-                PersonalTrainer personal = personalRepo.findByEmailPersonal(personalTrainer);
-        
-                if(personal == null){
-                    throw new RegistroNaoEncontradoException("Personal Trainer inexistente");
-                }
-                if (aut == null ){
-                    throw new RegistroNaoEncontradoException("Autorizacao inexistente");
-                }
-                if (pesquisaUf == null){
-                    throw new RegistroNaoEncontradoException("UF inexistente");
-                }
-                
-                Usuario usuario = new Usuario();
-                usuario.setNome(nome);
-                usuario.setDataNascimento(dataNascimento);
-                usuario.setSenha(senha);
-                usuario.setEmail(email);
-                usuario.setUserUnico(userUnico);
-                usuario.setPersonalTrainer(personal);
-                usuario.setTelefone(telefone);
-                usuario.setAutorizacao(new HashSet<Autorizacao>());
-                usuario.getAutorizacao().add(aut);
-                
-        
-                Endereco end = new Endereco();
-                end.setBairro(bairro);
-                end.setCidade(cidade);
-                end.setLogradouro(logradouro);
-                end.setNumero(numero);
-                end.setUf(pesquisaUf);
-        
-                usuario.setEndereco(end);
-        
-                end.setUsuario(usuario);
-        
-                usuarioRepo.save(usuario);
-        
-                endRepo.save(end);
-        
-                return usuario;
+        termoUserRepo.save(termosUsuario);
+
+        usuario.setEndereco(end);
+
+        end.setUsuario(usuario);
+
+        usuarioRepo.save(usuario);
+
+        endRepo.save(end);
+
+        return usuario;
     }
 
     @Override
     public Usuario removeAdmin(Long id) {
         Optional<Usuario> usuario = usuarioRepo.findById(id);
 
-        if(usuario.isPresent()){
+        if (usuario.isPresent()) {
             usuarioRepo.delete(usuario.get());
         }
         return null;
@@ -167,7 +210,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario removeUsuario(Long id) {
         Optional<Usuario> usuario = usuarioRepo.findById(id);
 
-        if(usuario.isPresent()){
+        if (usuario.isPresent()) {
             usuarioRepo.delete(usuario.get());
         }
         return null;

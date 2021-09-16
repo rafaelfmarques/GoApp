@@ -1,6 +1,7 @@
 package com.project.go.controllers;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class UsuarioDto {
     
@@ -24,6 +25,21 @@ public class UsuarioDto {
 
     //Entidade PersonalTrainer
     private String emailPersonal;
+
+    //Entidade Versao Termo
+    private Float versao;
+
+    //Entidade Termos Usuario
+    private boolean consentimentoEndereco;
+
+    private boolean consentimentoContatoEmail;
+
+    private boolean consentimentoContatoTel;
+
+    private LocalDateTime criacao;
+
+    private LocalDateTime atualizado;
+
 
     public String getNome() {
         return this.nome;
@@ -127,6 +143,66 @@ public class UsuarioDto {
 
     public void setEmailPersonal(String emailPersonal) {
         this.emailPersonal = emailPersonal;
+    }
+
+    public Float getVersao() {
+        return this.versao;
+    }
+
+    public void setVersao(Float versao) {
+        this.versao = versao;
+    }
+
+    public boolean isConsentimentoEndereco() {
+        return this.consentimentoEndereco;
+    }
+
+    public boolean getConsentimentoEndereco() {
+        return this.consentimentoEndereco;
+    }
+
+    public void setConsentimentoEndereco(boolean consentimentoEndereco) {
+        this.consentimentoEndereco = consentimentoEndereco;
+    }
+
+    public boolean isConsentimentoContatoEmail() {
+        return this.consentimentoContatoEmail;
+    }
+
+    public boolean getConsentimentoContatoEmail() {
+        return this.consentimentoContatoEmail;
+    }
+
+    public void setConsentimentoContatoEmail(boolean consentimentoContatoEmail) {
+        this.consentimentoContatoEmail = consentimentoContatoEmail;
+    }
+
+    public boolean isConsentimentoContatoTel() {
+        return this.consentimentoContatoTel;
+    }
+
+    public boolean getConsentimentoContatoTel() {
+        return this.consentimentoContatoTel;
+    }
+
+    public void setConsentimentoContatoTel(boolean consentimentoContatoTel) {
+        this.consentimentoContatoTel = consentimentoContatoTel;
+    }
+
+    public LocalDateTime getCriacao() {
+        return this.criacao;
+    }
+
+    public void setCriacao(LocalDateTime criacao) {
+        this.criacao = criacao;
+    }
+
+    public LocalDateTime getAtualizado() {
+        return this.atualizado;
+    }
+
+    public void setAtualizado(LocalDateTime atualizado) {
+        this.atualizado = atualizado;
     }
 
 

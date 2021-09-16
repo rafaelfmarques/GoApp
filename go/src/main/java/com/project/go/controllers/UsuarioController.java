@@ -4,8 +4,9 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.project.go.JsonConfigure.View;
-
+import com.project.go.entity.Termos;
 import com.project.go.entity.Usuario;
+import com.project.go.service.TermosService;
 import com.project.go.service.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,10 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usService;
 
+    @Autowired TermosService termoService;
+
     
-    @GetMapping
+    @GetMapping(value = "/listar")
     @JsonView(View.Usuario.class)
     public List<Usuario> buscarUsuarios(){
         return usService.buscarUsuarios();
@@ -40,7 +43,12 @@ public class UsuarioController {
     @JsonView(View.Usuario.class)
     public Usuario cadastrarUsuario(@RequestBody UsuarioDto usuario){
     
-        return usService.criaUsuario(usuario.getNome(), usuario.getEmail(), usuario.getSenha(), usuario.getDataNascimento(), usuario.getTelefone(), usuario.getUserUnico(), usuario.getEmailPersonal(), "ROLE_USER", usuario.getBairro(), usuario.getCidade(), usuario.getLogradouro(), usuario.getNumero(), usuario.getUfNome());
+        return usService.criaUsuario(usuario.getNome(), usuario.getEmail(), usuario.getSenha(), usuario.getDataNascimento(), 
+                                    usuario.getTelefone(), usuario.getUserUnico(), usuario.getEmailPersonal(), "ROLE_USER", 
+                                    usuario.getBairro(), usuario.getCidade(), usuario.getLogradouro(), usuario.getNumero(), 
+                                    usuario.getUfNome(), usuario.getVersao(), usuario.getConsentimentoEndereco(), 
+                                    usuario.getConsentimentoContatoEmail(), usuario.getConsentimentoContatoTel(), 
+                                    usuario.getCriacao(), usuario.getAtualizado());
     }
 
     
@@ -55,7 +63,11 @@ public class UsuarioController {
     @JsonView(View.Usuario.class)
     public Usuario cadastrarAdmin(@RequestBody UsuarioDto usuario){
     
-        return usService.criaUsuario(usuario.getNome(), usuario.getEmail(), usuario.getSenha(), usuario.getDataNascimento(), usuario.getTelefone(), usuario.getUserUnico(), usuario.getEmailPersonal(), "ROLE_ADMIN", usuario.getBairro(), usuario.getCidade(), usuario.getLogradouro(), usuario.getNumero(), usuario.getUfNome());
+        return usService.criaAdmin(usuario.getNome(), usuario.getEmail(), usuario.getSenha(), usuario.getDataNascimento(), 
+                                    usuario.getTelefone(), usuario.getUserUnico(), "ROLE_ADMIN", usuario.getBairro(), usuario.getCidade(), usuario.getLogradouro(), usuario.getNumero(), 
+                                    usuario.getUfNome(), usuario.getVersao(), usuario.getConsentimentoEndereco(), 
+                                    usuario.getConsentimentoContatoEmail(), usuario.getConsentimentoContatoTel(), 
+                                    usuario.getCriacao(), usuario.getAtualizado());
     }
 
     @DeleteMapping("/admin/excluir/{id}")
@@ -64,5 +76,8 @@ public class UsuarioController {
         return usService.removeUsuario(id);
     }
     
-
+    @PostMapping("/admin/termos/novo")
+    public Termos cadastrarVersaoTermo(@RequestBody Termos termos){
+        return termoService.criaVersaoTermo(termos.getVersao());
+    }
 }

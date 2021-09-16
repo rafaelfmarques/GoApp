@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -82,6 +83,9 @@ public class Usuario {
     private Set<Agendamento> agendamento;
 
 
+    @OneToMany(mappedBy = "usuario")
+    private Set<TermosUsuario> termosUsuario;
+    
     public Long getId() {
         return this.id;
     }
@@ -170,5 +174,12 @@ public class Usuario {
         this.agendamento = agendamento;
     }
 
+    public Set<TermosUsuario> getTermosUsuario() {
+        return this.termosUsuario;
+    }
+
+    public void setTermosUsuario(Set<TermosUsuario> termosUsuario) {
+        this.termosUsuario = termosUsuario;
+    }
 
 }
