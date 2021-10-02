@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 
     public Usuario findByUserUnicoAndEmail(String userUnico, String email);
-
+    
     public Usuario findByUserUnico(String userUnico);
 
     @Query("SELECT u FROM Usuario u INNER JOIN u.endereco e WHERE e.logradouro=?1")

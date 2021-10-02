@@ -8,6 +8,7 @@ import com.project.go.entity.Agendamento;
 import com.project.go.service.AgendamentoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin
 @RequestMapping(value = "/agendamento")
 public class AgendamentoController {
 
@@ -39,7 +41,7 @@ public class AgendamentoController {
 
     @GetMapping(value = "/listar")
     @JsonView(View.Agendamento.class)
-    public List<Agendamento> buscarUsuarios(){
+    public List<Agendamento> buscarAgendametnos(){
         return agendaService.buscarAgendamentos();
     }
     

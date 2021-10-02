@@ -8,15 +8,18 @@ import com.project.go.entity.Usuario;
 import com.project.go.service.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin
 @RequestMapping(value = "/usuario")
 public class UsuarioController {
 
@@ -28,13 +31,13 @@ public class UsuarioController {
     public List<Usuario> buscarUsuarios(){
         return usService.buscarUsuarios();
     }
-
+    
     @GetMapping(value = "/{id}")
     public Usuario buscaPorId(@PathVariable("id") Long id){
         return usService.buscaUsuarioPorId(id);
     }
 
-    @PostMapping(value = "/novo")
+    @PostMapping(value = "/cadastrar")
     @JsonView(View.Usuario.class)
     public Usuario cadastrarUsuario(@RequestBody UsuarioDto usuario){
     
@@ -44,6 +47,14 @@ public class UsuarioController {
                                     usuario.getUfNome());
     }
 
+    @PutMapping("/atualizar/{id}")
+    @JsonView(View.Usuario.class)
+    public Usuario atualizaUsuario(@PathVariable("id") Long id, @RequestBody UsuarioDto usuario){
+        return usService.atualizaUsuario(id, usuario.getNome(), usuario.getEmail(), usuario.getSenha(), 
+                                        usuario.getDataNascimento(), usuario.getTelefone(), usuario.getUserUnico(), 
+                                        usuario.getEmailPersonal(), "ROLE_USER", usuario.getBairro(), usuario.getCidade(), 
+                                        usuario.getLogradouro(), usuario.getNumero(), usuario.getUfNome());
+    }
     
     @DeleteMapping("/excluir/{id}")
     @JsonView(View.Usuario.class)
@@ -66,6 +77,16 @@ public class UsuarioController {
     public Usuario removeAdmin(@PathVariable Long id){
         return usService.removeUsuario(id);
     }
+
+
+    @PutMapping("admin/atualizar/{id}")
+    @JsonView(View.Usuario.class)
+    public Usuario atualizaAdmin(@PathVariable("id") Long id, @RequestBody UsuarioDto usuario){
+        return usService.atualizaAdmin(id, usuario.getNome(), usuario.getEmail(), usuario.getSenha(), 
+                                        usuario.getDataNascimento(), usuario.getTelefone(), usuario.getUserUnico(),  
+                                        "ROLE_ADMIN", usuario.getBairro(), usuario.getCidade(), 
+                                        usuario.getLogradouro(), usuario.getNumero(), usuario.getUfNome());
+    }    
     
 
 }

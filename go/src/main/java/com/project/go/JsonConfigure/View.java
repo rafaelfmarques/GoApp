@@ -9,4 +9,6 @@ public class View {
         public static class Agendamento{}
 
         public static class PersonalTrainer{}
+
+        public static class Uf{}
 }

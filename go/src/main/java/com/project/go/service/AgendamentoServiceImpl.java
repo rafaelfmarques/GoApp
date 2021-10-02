@@ -17,6 +17,7 @@ import com.project.go.repository.DiasSemanaRepository;
 import com.project.go.repository.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +37,7 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     @Autowired
     private AgendamentoRepository agendamentoRepo;
 
+    @PreAuthorize("isAuthenticated()")
     public Agendamento criaAgendamento(LocalDate Data, LocalTime horarioInicio, String observacao, String userUnico, String diasSemana, String agendamentoStatus){
         
         Usuario pesquisaUser = userRepo.findByUserUnico(userUnico);
@@ -67,16 +69,18 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public Agendamento removeAgendamento(Long id) {
         Optional<Agendamento> agendamento = agendamentoRepo.findById(id);
-
+        
         if(agendamento.isPresent()){
             agendamentoRepo.delete(agendamento.get());
         }
         return null;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @Override
     public List<Agendamento> buscarAgendamentos() {
         

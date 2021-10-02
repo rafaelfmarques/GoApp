@@ -23,7 +23,7 @@ public class Uf {
     @Column(name = "uf_id")
     private Long id;
 
-    @JsonView(View.Usuario.class)
+    @JsonView({View.Usuario.class, View.Uf.class})
     @Column(unique = true, name = "uf_nome")
     private String ufNome;
 

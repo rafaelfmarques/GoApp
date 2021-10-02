@@ -8,15 +8,18 @@ import com.project.go.entity.PersonalTrainer;
 import com.project.go.service.PersonalTrainerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin
 @RequestMapping(value = "/personal")
 public class PersonalController {
     
@@ -27,6 +30,12 @@ public class PersonalController {
     @JsonView(View.PersonalTrainer.class)
     public PersonalTrainer cadastraPersonal(@RequestBody PersonalTrainer personal){
         return personalService.criaPersonal(personal.getNome(), personal.getEmail(), personal.getFormacao());
+    }
+
+    @PutMapping(value = "/atualizar/{id}")
+    @JsonView(View.PersonalTrainer.class)
+    public PersonalTrainer atualizaPersonal(@PathVariable("id") Long id, @RequestBody PersonalTrainer personal){
+        return personalService.atualizaPersonal(id, personal.getNome(), personal.getEmail(), personal.getFormacao());
     }
 
     @DeleteMapping(value = "/excluir/{id}")

@@ -9,6 +9,7 @@ import com.project.go.exception.RegistroNaoEncontradoException;
 import com.project.go.repository.PersonalTrainerRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ public class PersonalTrainerServiceImpl implements PersonalTrainerService{
     private PersonalTrainerRepository personalRepo;
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public PersonalTrainer criaPersonal(String nomePersonal, String emailPersonal, String formacao) {
         
         PersonalTrainer personal = personalRepo.findByEmailPersonal(emailPersonal);
@@ -40,7 +42,33 @@ public class PersonalTrainerServiceImpl implements PersonalTrainerService{
         
     }
 
+
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public PersonalTrainer atualizaPersonal(Long id, String nomePersonal, String emailPersonal, String formacao) {
+        
+        Optional<PersonalTrainer> personalOp = personalRepo.findById(id);
+
+        if (!personalOp.isPresent()) {
+            throw new RegistroNaoEncontradoException("Personal inexistente");
+        }
+
+        PersonalTrainer personalTrainer = new PersonalTrainer();
+
+        personalTrainer.setId(id);
+        personalTrainer.setNome(nomePersonal);
+        personalTrainer.setEmail(emailPersonal);
+        personalTrainer.setFormacao(formacao);
+
+        personalRepo.save(personalTrainer);
+
+        return personalTrainer;
+        
+
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public PersonalTrainer excluiPersonal(Long id) {
         Optional<PersonalTrainer> personal = personalRepo.findById(id);
 
@@ -54,6 +82,7 @@ public class PersonalTrainerServiceImpl implements PersonalTrainerService{
     }
 
     @Override
+    @PreAuthorize("isAuthenticated()")
     public List<PersonalTrainer> buscaPersonal() {
 
         return personalRepo.findAll();
