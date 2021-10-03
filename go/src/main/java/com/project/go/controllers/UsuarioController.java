@@ -95,7 +95,7 @@ public class UsuarioController {
                 usuario.getAtualizado());
     }
 
-    @DeleteMapping("/admin/excluir/{id}")
+    @PatchMapping("/admin/excluir/{id}")
     @JsonView(View.Usuario.class)
     public Usuario removeAdmin(@PathVariable Long id) {
         return usService.removeAdmin(id);
