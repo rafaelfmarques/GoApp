@@ -12,6 +12,7 @@ import com.project.go.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -52,10 +53,10 @@ public class UsuarioController {
                 usuario.getAtualizado());
     }
 
-    @DeleteMapping("/excluir/{id}")
+    @PatchMapping("/excluir/{id}")
     @JsonView(View.Usuario.class)
-    public Usuario removeUsuario(@PathVariable Long id, @RequestBody UsuarioDto usuario) {
-        return null;
+    public Usuario removeUsuario(@PathVariable Long id) {
+        return usService.removeUsuario(id);
     }
 
     @PutMapping("/atualizar/{id}")
@@ -82,7 +83,6 @@ public class UsuarioController {
                 usuario.getAtualizado());
     }
 
-    
     @PutMapping("/admin/atualizar/{id}")
     @JsonView(View.Usuario.class)
     public Usuario atualizaAdmin(@PathVariable("id") Long id, @RequestBody UsuarioDto usuario) {
@@ -98,7 +98,7 @@ public class UsuarioController {
     @DeleteMapping("/admin/excluir/{id}")
     @JsonView(View.Usuario.class)
     public Usuario removeAdmin(@PathVariable Long id) {
-        return usService.removeUsuario(id);
+        return usService.removeAdmin(id);
     }
 
     @PostMapping("/admin/termos/novo")

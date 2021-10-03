@@ -147,6 +147,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
+    @Transactional
     public Usuario criaAdmin(String nome, String email, String senha, LocalDate dataNascimento, String telefone,
             String userUnico, String autorizacao, String bairro, String cidade, String logradouro, String numero,
             String uf, Float versao, Boolean consentimentoEndereco, Boolean consentimentoContatoEmail,
@@ -210,26 +211,50 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public Usuario removeAdmin(Long id) {
-        Optional<Usuario> usuario = usuarioRepo.findById(id);
 
-        if (usuario.isPresent()) {
-            usuarioRepo.delete(usuario.get());
+        Optional<Usuario> usuarioOp = usuarioRepo.findById(id);
+
+        if (!usuarioOp.isPresent()) {
+            throw new RegistroNaoEncontradoException("Usuário inexistente");
         }
-        return null;
+        Usuario usuario = usuarioRepo.getById(id);
+        usuario.setId(id);
+        usuario.setNome(null);
+        usuario.setEmail(null);
+        usuario.setUserUnico(null);
+        usuario.setTelefone(null);
+
+        usuarioRepo.save(usuario);
+
+        return usuario;
+
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public Usuario removeUsuario(Long id) {
-        Optional<Usuario> usuario = usuarioRepo.findById(id);
 
-        if (usuario.isPresent()) {
-            usuarioRepo.delete(usuario.get());
+        Optional<Usuario> usuarioOp = usuarioRepo.findById(id);
+
+        if (!usuarioOp.isPresent()) {
+            throw new RegistroNaoEncontradoException("Usuário inexistente");
         }
-        return null;
+        Usuario usuario = usuarioRepo.getById(id);
+        usuario.setId(id);
+        usuario.setNome(null);
+        usuario.setEmail(null);
+        usuario.setUserUnico(null);
+        usuario.setTelefone(null);
+
+        usuarioRepo.save(usuario);
+
+        return usuario;
+
     }
 
     @Override
     @PreAuthorize("isAuthenticated()")
+    @Transactional
     public Usuario atualizaUsuario(Long id, String nome, String email, String senha, LocalDate dataNascimento,
             String telefone, String userUnico, String personalTrainer, String autorizacao, String bairro, String cidade,
             String logradouro, String numero, String uf, Float versao, Boolean consentimentoEndereco,
@@ -301,6 +326,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
+    @Transactional
     public Usuario atualizaAdmin(Long id, String nome, String email, String senha, LocalDate dataNascimento,
             String telefone, String userUnico, String autorizacao, String bairro, String cidade, String logradouro,
             String numero, String uf, Float versao, Boolean consentimentoEndereco, Boolean consentimentoContatoEmail,
@@ -369,7 +395,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     }
 
-    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepo.findByUserUnico(username);
