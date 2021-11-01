@@ -3,6 +3,8 @@ package com.project.go.JsonConfigure;
 public class View {
 
         public static class Usuario{}
+
+        public static class UsuarioListagem{}
         
         public static class Autorizacao{}
         

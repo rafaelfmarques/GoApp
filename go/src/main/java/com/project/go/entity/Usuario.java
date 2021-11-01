@@ -31,7 +31,7 @@ public class Usuario {
     @Column(name = "usuario_id")
     private Long id;
 
-    @JsonView({View.Usuario.class, View.Autorizacao.class, View.Agendamento.class, View.PersonalTrainer.class})
+    @JsonView({View.Usuario.class, View.UsuarioListagem.class, View.Autorizacao.class, View.Agendamento.class, View.PersonalTrainer.class})
     @Column(name = "usuario_nome")
     private String nome;
 

@@ -10,7 +10,6 @@ import com.project.go.service.TermosService;
 import com.project.go.service.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -104,5 +103,11 @@ public class UsuarioController {
     @PostMapping("/admin/termos/novo")
     public Termos cadastrarVersaoTermo(@RequestBody Termos termos) {
         return termoService.criaVersaoTermo(termos.getVersao());
+    }
+
+    @GetMapping("/admin/listar/{autorizacao}")
+    @JsonView(View.UsuarioListagem.class)
+    public List <Usuario> listaUsuariosPorAutorizacao(@PathVariable("autorizacao") String autorizacao){
+        return usService.buscaUsuariosPorAutorizacao(autorizacao);
     }
 }

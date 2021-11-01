@@ -1,5 +1,7 @@
 package com.project.go.repository;
 
+import java.util.List;
+
 import com.project.go.entity.Usuario;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,5 +20,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 
     @Query("SELECT u FROM Usuario u INNER JOIN u.personalTrainer pt WHERE pt.emailPersonal=?1")
     public Usuario buscaPersonalTrainerPorEmail(String personalTrainer);
+
+    @Query("SELECT u FROM Usuario u INNER JOIN u.autorizacao aut WHERE aut.nomeAut=?1")
+    public List<Usuario> buscaUsuariosPorAutorizacao(String autorizacao);
 
 }

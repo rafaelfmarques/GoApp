@@ -407,4 +407,15 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .build();
     }
 
+    @Override
+    public List<Usuario> buscaUsuariosPorAutorizacao(String autorizacao) {
+        
+        List<Usuario> pesquisaUsuario = usuarioRepo.buscaUsuariosPorAutorizacao(autorizacao);
+        if(pesquisaUsuario == null){
+            throw new RegistroNaoEncontradoException("Usuário ou autorização inexistente");
+        }
+
+        return pesquisaUsuario;
+    }
+
 }
