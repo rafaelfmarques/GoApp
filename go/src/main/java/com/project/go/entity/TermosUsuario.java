@@ -24,25 +24,26 @@ public class TermosUsuario {
     @Column(name = "id_termo")
     private Long termoId;
 
-    @JsonView(View.Usuario.class)
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class })
     @Column(name = "consentimento_endereco")
     private Boolean consentimentoEndereco;
 
-    @JsonView(View.Usuario.class)
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class })
     @Column(name = "consentimento_contato_email")
     private Boolean consentimentoContatoEmail;
     
-    @JsonView(View.Usuario.class)
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class })
     @Column(name = "consentimento_contato_tel")
     private Boolean consentimentoContatoTel;
     
-    @JsonView(View.Usuario.class)
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class })
     @JsonFormat(pattern = "dd/MM/yyyyy HH:mm")
     @Column(name="criado_em")
     private LocalDateTime criacao;
 
     @JsonFormat(pattern = "dd/MM/yyyyy HH:mm")
     @Column(name = "atualizado_em")
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class })
     private LocalDateTime atualizado;
 
     @ManyToOne

@@ -22,7 +22,7 @@ public class AgendamentoStatus {
     @Column(nullable = false, name = "agendamento_status_id")
     private Long id;
     
-    @JsonView(View.Agendamento.class)
+    @JsonView({ View.Agendamento.class, View.UsuarioRelatorio.class})
     @Column(unique = true, nullable = false, name = "agendamento_status_nome")
     private String agendamentoStatus;
 

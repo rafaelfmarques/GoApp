@@ -21,7 +21,7 @@ public class Autorizacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonView({View.Usuario.class, View.Autorizacao.class})
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class, View.Autorizacao.class })
     @Column(name = "aut_nome")
     private String nomeAut;
 

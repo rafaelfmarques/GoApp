@@ -31,15 +31,15 @@ public class Usuario {
     @Column(name = "usuario_id")
     private Long id;
 
-    @JsonView({View.Usuario.class, View.UsuarioListagem.class, View.Autorizacao.class, View.Agendamento.class, View.PersonalTrainer.class})
+    @JsonView({View.Usuario.class, View.UsuarioRelatorio.class, View.UsuarioListagem.class, View.Autorizacao.class, View.Agendamento.class, View.PersonalTrainer.class})
     @Column(name = "usuario_nome")
     private String nome;
 
-    @JsonView({View.Usuario.class, View.Autorizacao.class, View.Agendamento.class, View.PersonalTrainer.class})
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class, View.Autorizacao.class, View.Agendamento.class, View.PersonalTrainer.class})
     @Column(name = "usuario_email")
     private String email;
 
-    @JsonView(View.Usuario.class)
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class })
     @JsonFormat(pattern = "dd-MM-yyyy")
     @Column(name = "usuario_dt_nasc")
     private LocalDate dataNascimento;
@@ -47,25 +47,25 @@ public class Usuario {
     @Column(name = "usuario_senha")
     private String senha;
     
-    @JsonView(View.Usuario.class)
+    @JsonView({View.Usuario.class, View.UsuarioRelatorio.class})
     @Column(name = "usuario_telefone")
     private String telefone;
 
-    @JsonView({View.Usuario.class, View.Autorizacao.class, View.Agendamento.class, View.PersonalTrainer.class})
+    @JsonView({View.Usuario.class, View.UsuarioRelatorio.class, View.Autorizacao.class, View.Agendamento.class, View.PersonalTrainer.class})
     @Column(unique = true, name = "usuario_unico")
     private String userUnico;
 
-    @JsonView(View.Usuario.class)
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class })
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_end_id")
     private Endereco endereco;
 
-    @JsonView(View.Usuario.class)
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class })
     @ManyToOne
     @JoinColumn(name = "personal_trainer_personal_id")
     private PersonalTrainer personalTrainer;
     
-    @JsonView(View.Usuario.class)
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class })
     @ManyToMany
     @JoinTable(name = "aut_user", 
         joinColumns = { @JoinColumn(name = "usuario_id") },
@@ -74,7 +74,7 @@ public class Usuario {
         )
     private Set<Autorizacao> autorizacao;
 
-    @JsonView(View.Usuario.class)
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class })
     @ManyToMany
     @JoinTable(name = "usuario_agendamento", 
         joinColumns = { @JoinColumn(name = "usuario_id")},
@@ -84,6 +84,7 @@ public class Usuario {
 
 
     @OneToMany(mappedBy = "usuario")
+    @JsonView(View.UsuarioRelatorio.class)
     private Set<TermosUsuario> termosUsuario;
     
     public Long getId() {

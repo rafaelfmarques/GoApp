@@ -29,22 +29,22 @@ public class Agendamento {
     private Long id;
 
 
-    @JsonView({View.Usuario.class, View.Agendamento.class})
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class, View.Agendamento.class })
     @JsonFormat(pattern = "dd-MM-yyyy")
     @Column(name = "data")
     private LocalDate data;
 
-    @JsonView({View.Usuario.class, View.Agendamento.class})
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class, View.Agendamento.class })
     @JsonFormat(pattern = "HH:mm:ss")
     @Column(name = "horario_inicio")
     private LocalTime horarioInicio;
 
-    @JsonView({View.Usuario.class, View.Agendamento.class})
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class, View.Agendamento.class })
     @JsonFormat(pattern = "HH:mm:ss")
     @Column(name = "horario_fim")
     private LocalTime horarioFim;
 
-    @JsonView({View.Usuario.class, View.Agendamento.class})
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class, View.Agendamento.class })
     @Column(name = "observacao")
     private String observacao;
 
@@ -54,11 +54,11 @@ public class Agendamento {
 
     @ManyToOne
     @JoinColumn(name = "dias_semana_id")
-    @JsonView(View.Agendamento.class)
+    @JsonView({ View.Agendamento.class, View.UsuarioRelatorio.class })
     private DiasSemana diasSemana;
 
     @ManyToOne
-    @JsonView(View.Agendamento.class)
+    @JsonView({ View.Agendamento.class, View.UsuarioRelatorio.class})
     @JoinColumn(name = "agendamento_status_id")
     private AgendamentoStatus agendamentoStatus;
 

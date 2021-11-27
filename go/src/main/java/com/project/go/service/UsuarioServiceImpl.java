@@ -136,6 +136,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    //@PreAuthorize("hasRole('ADMIN')")
+    public List<Usuario> relatorioUsuarios(){
+        return usuarioRepo.findAll();
+    }
+
+    @Override
     @PreAuthorize("hasRole('ADMIN')")
     public Usuario buscaUsuarioPorId(Long id) {
         Optional<Usuario> usuarioOp = usuarioRepo.findById(id);

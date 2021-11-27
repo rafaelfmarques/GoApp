@@ -23,27 +23,28 @@ public class Endereco {
     @Column(name = "end_id")
     private Long id;
 
-    @JsonView(View.Usuario.class)
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class })
     @Column(name = "end_logradouro")
     private String logradouro;
 
-    @JsonView(View.Usuario.class)
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class })
     @Column(name = "end_numero")
     private String numero;
 
-    @JsonView(View.Usuario.class)
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class })
     @Column(name = "end_bairro")
     private String bairro;
 
-    @JsonView(View.Usuario.class)
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class })
     @Column(name = "end_cidade")
     private String cidade;
 
-    @JsonView(View.Usuario.class)
+    @JsonView({ View.Usuario.class, View.UsuarioRelatorio.class })
     @Column(name = "end_complemento")
     private String complemento;
 
     @ManyToOne
+    @JsonView(View.UsuarioRelatorio.class)
     private Uf uf;
 
     @JsonIgnore

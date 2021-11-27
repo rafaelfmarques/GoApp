@@ -38,6 +38,8 @@ public interface UsuarioService extends UserDetailsService {
 
     public List<Usuario> buscarUsuarios();
 
+    public List<Usuario> relatorioUsuarios();
+
     public Usuario buscaUsuarioPorId(Long id);
 
     public List<Usuario> buscaUsuariosPorAutorizacao(String autorizacao);

@@ -105,6 +105,12 @@ public class UsuarioController {
         return termoService.criaVersaoTermo(termos.getVersao());
     }
 
+    @GetMapping("admin/relatorio")
+    @JsonView(View.UsuarioRelatorio.class)
+    public List<Usuario> relatorioUsuarios(){
+        return usService.relatorioUsuarios();
+    }
+
     @GetMapping("/admin/listar/{autorizacao}")
     @JsonView(View.UsuarioListagem.class)
     public List <Usuario> listaUsuariosPorAutorizacao(@PathVariable("autorizacao") String autorizacao){

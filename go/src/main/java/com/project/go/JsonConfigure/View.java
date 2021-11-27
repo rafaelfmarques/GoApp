@@ -5,6 +5,8 @@ public class View {
         public static class Usuario{}
 
         public static class UsuarioListagem{}
+
+        public static class UsuarioRelatorio{}
         
         public static class Autorizacao{}
         

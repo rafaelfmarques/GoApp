@@ -22,7 +22,7 @@ public class DiasSemana {
     @Column(name = "dias_semana_id")
     private Long id;
 
-    @JsonView(View.Agendamento.class)
+    @JsonView({ View.Agendamento.class, View.UsuarioRelatorio.class })
     @Column(unique = true, name = "dias_semana")
     private String diasSemana;
 

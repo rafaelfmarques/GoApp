@@ -22,15 +22,15 @@ public class PersonalTrainer {
     @Column(name = "personal_id")
     private Long id;
 
-    @JsonView({View.Usuario.class, View.PersonalTrainer.class})
+    @JsonView({View.Usuario.class, View.UsuarioRelatorio.class, View.PersonalTrainer.class})
     @Column(name = "personal_nome")
     private String nomePersonal;
 
-    @JsonView({View.Usuario.class, View.PersonalTrainer.class})
+    @JsonView({View.Usuario.class, View.UsuarioRelatorio.class, View.PersonalTrainer.class})
     @Column(unique = true, name = "personal_email")
     private String emailPersonal;
     
-    @JsonView({View.Usuario.class, View.PersonalTrainer.class})
+    @JsonView({View.Usuario.class, View.UsuarioRelatorio.class, View.PersonalTrainer.class})
     @Column(name = "personal_formacao")
     private String formacao;
 
