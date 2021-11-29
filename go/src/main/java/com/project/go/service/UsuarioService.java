@@ -28,11 +28,9 @@ public interface UsuarioService extends UserDetailsService{
 
     public Usuario removeUsuario(Long id);
     
-    public Usuario removeAdmin(Long id);
 
     public List<Usuario> buscarUsuarios();
     
-    public Usuario buscaUsuarioPorId(Long id);
-
+    public Usuario buscaUsuarioPorUsername(String userUnico);
 
 }

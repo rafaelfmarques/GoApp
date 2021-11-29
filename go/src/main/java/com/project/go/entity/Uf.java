@@ -23,11 +23,10 @@ public class Uf {
     @Column(name = "uf_id")
     private Long id;
 
-    @JsonView({View.Usuario.class, View.Uf.class})
+    @JsonView({View.Usuario.class, View.Uf.class, View.UsuarioDados.class})
     @Column(unique = true, name = "uf_nome")
     private String ufNome;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "uf")
     private Set<Endereco> endereco;
 

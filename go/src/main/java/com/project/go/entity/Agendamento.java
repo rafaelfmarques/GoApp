@@ -10,11 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.project.go.JsonConfigure.View;
 
@@ -27,7 +29,6 @@ public class Agendamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "agendamento_id")
     private Long id;
-
 
     @JsonView({View.Usuario.class, View.Agendamento.class})
     @JsonFormat(pattern = "dd-MM-yyyy")
@@ -48,20 +49,25 @@ public class Agendamento {
     @Column(name = "observacao")
     private String observacao;
 
-    @JsonView(View.Agendamento.class)
-    @ManyToMany(mappedBy = "agendamento")
+    @JsonView({ View.Agendamento.class })
+    @ManyToMany
+    @JoinTable(name = "usuario_agendamento", 
+        joinColumns = { @JoinColumn(name = "agendamento_id")},
+        inverseJoinColumns = { @JoinColumn(name = "usuario_id") }
+        )
     private Set<Usuario> usuario;
+
 
     @ManyToOne
     @JoinColumn(name = "dias_semana_id")
-    @JsonView(View.Agendamento.class)
+    @JsonView({ View.Agendamento.class })
+    
     private DiasSemana diasSemana;
 
     @ManyToOne
     @JsonView(View.Agendamento.class)
     @JoinColumn(name = "agendamento_status_id")
     private AgendamentoStatus agendamentoStatus;
-
 
     public Long getId() {
         return this.id;

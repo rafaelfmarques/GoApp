@@ -41,8 +41,14 @@ public class AgendamentoController {
 
     @GetMapping(value = "/listar")
     @JsonView(View.Agendamento.class)
-    public List<Agendamento> buscarAgendametnos(){
+    public List<Agendamento> buscaAgendamentos(){
         return agendaService.buscarAgendamentos();
+    }
+
+    @GetMapping(value = "/usuario/listar/{nome}")
+    @JsonView(View.Agendamento.class)
+    public List<Agendamento> buscarAgendamentoPorUser(@PathVariable String nome ){
+        return agendaService.buscarAgendamentoPorUsuario(nome);
     }
     
 }

@@ -160,30 +160,29 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepo.findAll();
     }
 
+  
     @Override
-    @PreAuthorize("hasROLE('ADMIN')")
-    public Usuario buscaUsuarioPorId(Long id) {
-        Optional<Usuario> usuarioOp = usuarioRepo.findById(id);
-        if (usuarioOp.isPresent()) {
-            return usuarioOp.get();
-        }
-        throw new RegistroNaoEncontradoException("Usuário não encontrado");
+    @PreAuthorize("isAuthenticated()")
+    public Usuario buscaUsuarioPorUsername(String userUnico) {
+        return usuarioRepo.findByUserUnico(userUnico);
+        //Usuario usuarioOp = usuarioRepo.findByUserUnico(userUnico);
+       // if (usuarioOp.isPresent()) {
+         //   return usuarioOp.get();
+        //}
+        //throw new RegistroNaoEncontradoException("Usuário não encontrado");
     }
+
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public Usuario criaAdmin(String nome, String email, String senha, LocalDate dataNascimento, String telefone,
             String userUnico, String autorizacao, String bairro, String cidade, String logradouro, String numero,
             String uf) {
-
         Uf pesquisaUf = ufRepo.findByUfNome(uf);
         Autorizacao aut = autRepo.findByNomeAut(autorizacao);
-
-        if (aut == null) {
-            throw new RegistroNaoEncontradoException("Autorizacao inexistente");
-        }
-        if (pesquisaUf == null) {
-            throw new RegistroNaoEncontradoException("UF inexistente");
+        
+        if (aut == null || pesquisaUf == null) {
+            throw new RegistroNaoEncontradoException("Dados inexistentes.");
         }
 
         Usuario usuario = new Usuario();
@@ -204,11 +203,8 @@ public class UsuarioServiceImpl implements UsuarioService {
         end.setUf(pesquisaUf);
 
         usuario.setEndereco(end);
-
         end.setUsuario(usuario);
-
         usuarioRepo.save(usuario);
-
         endRepo.save(end);
 
         return usuario;
@@ -265,16 +261,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuario;
     }
 
-    @Override
-    @PreAuthorize("hasRole('ADMIN')")
-    public Usuario removeAdmin(Long id) {
-        Optional<Usuario> usuario = usuarioRepo.findById(id);
-
-        if (usuario.isPresent()) {
-            usuarioRepo.delete(usuario.get());
-        }
-        return null;
-    }
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")

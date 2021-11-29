@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.project.go.JsonConfigure.View;
 
@@ -22,10 +23,11 @@ public class AgendamentoStatus {
     @Column(nullable = false, name = "agendamento_status_id")
     private Long id;
     
-    @JsonView(View.Agendamento.class)
+    @JsonView({ View.Agendamento.class })
     @Column(unique = true, nullable = false, name = "agendamento_status_nome")
     private String agendamentoStatus;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "agendamentoStatus")
     private Set<Agendamento>agendamento;   
 

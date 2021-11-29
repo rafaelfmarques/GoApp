@@ -37,17 +37,18 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     @Autowired
     private AgendamentoRepository agendamentoRepo;
 
+
     @PreAuthorize("isAuthenticated()")
     public Agendamento criaAgendamento(LocalDate Data, LocalTime horarioInicio, String observacao, String userUnico, String diasSemana, String agendamentoStatus){
-        
+
         Usuario pesquisaUser = userRepo.findByUserUnico(userUnico);
         DiasSemana pesquisaDias = diasRepo.findByDiasSemana(diasSemana);
         AgendamentoStatus pesquisaAgendamentoStatus = agendamentoStatusRepo.findByAgendamentoStatus(agendamentoStatus);
-        
+
         if(pesquisaUser == null || pesquisaDias == null || pesquisaAgendamentoStatus == null || Data == null){
             throw new RegistroNaoEncontradoException("Dados inexistentes");
         }
-
+        
         java.sql.Time tempo = java.sql.Time.valueOf(horarioInicio);
         LocalTime localtime = tempo.toLocalTime();
         LocalTime horarioFim = localtime.plusMinutes(60);
@@ -85,5 +86,12 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     public List<Agendamento> buscarAgendamentos() {
         
         return agendamentoRepo.findAll();
+    }
+
+
+    @Override
+    @PreAuthorize("isAuthenticated()")
+    public List<Agendamento> buscarAgendamentoPorUsuario(String userUnico) {
+        return agendamentoRepo.findByUsuario_UserUnico(userUnico);
     }
 }

@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.project.go.JsonConfigure.View;
 
@@ -21,7 +22,7 @@ public class Autorizacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonView({View.Usuario.class, View.Autorizacao.class})
+    @JsonView({View.Usuario.class, View.UsuarioDados.class, View.Autorizacao.class})
     @Column(name = "aut_nome")
     private String nomeAut;
 

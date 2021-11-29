@@ -82,7 +82,6 @@ public class PersonalTrainerServiceImpl implements PersonalTrainerService{
     }
 
     @Override
-    @PreAuthorize("isAuthenticated()")
     public List<PersonalTrainer> buscaPersonal() {
 
         return personalRepo.findAll();

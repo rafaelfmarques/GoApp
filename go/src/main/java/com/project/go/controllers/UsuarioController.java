@@ -32,9 +32,10 @@ public class UsuarioController {
         return usService.buscarUsuarios();
     }
     
-    @GetMapping(value = "/{id}")
-    public Usuario buscaPorId(@PathVariable("id") Long id){
-        return usService.buscaUsuarioPorId(id);
+    @GetMapping(value = "/{username}")
+    @JsonView(View.UsuarioDados.class)
+    public Usuario buscaPorUsername(@PathVariable("username") String userUnico){
+        return usService.buscaUsuarioPorUsername(userUnico);
     }
 
     @PostMapping(value = "/cadastrar")
@@ -70,12 +71,6 @@ public class UsuarioController {
         return usService.criaAdmin(usuario.getNome(), usuario.getEmail(), usuario.getSenha(), usuario.getDataNascimento(), 
                                     usuario.getTelefone(), usuario.getUserUnico(), "ROLE_ADMIN", usuario.getBairro(), usuario.getCidade(), usuario.getLogradouro(), usuario.getNumero(), 
                                     usuario.getUfNome());
-    }
-
-    @DeleteMapping("/admin/excluir/{id}")
-    @JsonView(View.Usuario.class)
-    public Usuario removeAdmin(@PathVariable Long id){
-        return usService.removeUsuario(id);
     }
 
 

@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.project.go.JsonConfigure.View;
 
@@ -17,6 +18,7 @@ import com.project.go.JsonConfigure.View;
 @Table(name = "personal_trainers")
 public class PersonalTrainer {
     
+    @JsonView({View.PersonalTrainer.class})
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "personal_id")
@@ -30,11 +32,11 @@ public class PersonalTrainer {
     @Column(unique = true, name = "personal_email")
     private String emailPersonal;
     
-    @JsonView({View.Usuario.class, View.PersonalTrainer.class})
+    @JsonView({View.Usuario.class, View.UsuarioDados.class, View.PersonalTrainer.class})
     @Column(name = "personal_formacao")
     private String formacao;
 
-    @JsonView(View.PersonalTrainer.class)
+    @JsonView({ View.PersonalTrainer.class})
     @OneToMany(mappedBy = "personalTrainer")
     private Set<Usuario> usuario;
 

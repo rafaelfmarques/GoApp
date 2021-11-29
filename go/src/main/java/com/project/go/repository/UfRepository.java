@@ -10,6 +10,4 @@ public interface UfRepository extends JpaRepository<Uf, Long> {
     
     public Uf findByUfNome(String ufNome);
 
- 
-
 }

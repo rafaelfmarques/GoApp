@@ -14,4 +14,5 @@ public interface AgendamentoService {
 
     public List<Agendamento> buscarAgendamentos();
 
+    public List<Agendamento>buscarAgendamentoPorUsuario(String userUnico);
 }
