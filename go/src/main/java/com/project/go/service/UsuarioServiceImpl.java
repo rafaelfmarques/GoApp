@@ -165,11 +165,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     @PreAuthorize("isAuthenticated()")
     public Usuario buscaUsuarioPorUsername(String userUnico) {
         return usuarioRepo.findByUserUnico(userUnico);
-        //Usuario usuarioOp = usuarioRepo.findByUserUnico(userUnico);
-       // if (usuarioOp.isPresent()) {
-         //   return usuarioOp.get();
-        //}
-        //throw new RegistroNaoEncontradoException("Usuário não encontrado");
     }
 
 
@@ -275,16 +270,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-      Usuario usuario = usuarioRepo.findByUserUnico(username);
-      if (usuario == null) {
+      Usuario pesquisaUsuario = usuarioRepo.findByUserUnico(username);
+      if (pesquisaUsuario == null) {
         throw new UsernameNotFoundException("Usuário " + username + " não encontrado!");
-      }
-      return User.builder().username(username)
-            .password(usuario.getSenha())
-            .authorities(usuario.getAutorizacao().stream()
-                .map(Autorizacao::getNome).collect(Collectors.toList())
-                .toArray(new String[usuario.getAutorizacao().size()]))
-            .build();
     }
+      return User.builder().username(username)
+            .password(pesquisaUsuario.getSenha())
+            .authorities(pesquisaUsuario.getAutorizacao().stream()
+                .map(Autorizacao::getNome).collect(Collectors.toList())
+                .toArray(new String[pesquisaUsuario.getAutorizacao().size()]))
+            .build();
+}
 
 }

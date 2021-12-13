@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.project.go.entity.Usuario;
+import com.project.go.security.Login;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -32,5 +33,6 @@ public interface UsuarioService extends UserDetailsService{
     public List<Usuario> buscarUsuarios();
     
     public Usuario buscaUsuarioPorUsername(String userUnico);
+
 
 }

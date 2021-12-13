@@ -6,7 +6,9 @@ import java.time.LocalTime;
 public class AgendamentoDto {
 
     private LocalDate data;
+
     private LocalTime horarioInicio;
+    
     private String observacao;
 
     private String diasSemana;

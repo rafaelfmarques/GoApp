@@ -13,4 +13,6 @@ public class View {
         public static class PersonalTrainer{}
 
         public static class Uf{}
+
+        public static class TentativasLogin{}
 }

@@ -14,21 +14,23 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.project.go.JsonConfigure.View;
 
 @Entity
-@Table(name = "dias_semana")
-public class DiasSemana {
+@Table(name = "configuracao")
+public class Configuracao {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "dias_semana_id")
+    @Column(name = "configuracao_id")
     private Long id;
 
     @JsonView(View.Agendamento.class)
-    @Column(unique = true, name = "dias_semana")
-    private String diasSemana;
+    @Column(name="valor")
+    private Long valor;
 
-    @OneToMany(mappedBy = "diasSemana")
+    @Column(unique = true, name="nome")
+    private String configNome;
+
+    @OneToMany(mappedBy = "configuracao")
     private Set<Agendamento> agendamento;
-
 
     public Long getId() {
         return this.id;
@@ -38,12 +40,21 @@ public class DiasSemana {
         this.id = id;
     }
 
-    public String getDiasSemana() {
-        return this.diasSemana;
+    public Long getValor() {
+        return this.valor;
     }
 
-    public void setDiasSemana(String diasSemana) {
-        this.diasSemana = diasSemana;
+    public void setValor(Long valor) {
+        this.valor = valor;
+    }
+
+
+    public String getConfigNome() {
+        return this.configNome;
+    }
+
+    public void setConfigNome(String configNome) {
+        this.configNome = configNome;
     }
 
     public Set<Agendamento> getAgendamento() {

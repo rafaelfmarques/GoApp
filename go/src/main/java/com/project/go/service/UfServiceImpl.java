@@ -14,9 +14,9 @@ public class UfServiceImpl implements UfService {
     @Autowired
     private UfRepository ufRepo;
 
+
     @Override
-    public List<Uf> listaUfs() {
-        
+    public List<Uf> listaUfs() {   
         return ufRepo.findAll();
     }
     

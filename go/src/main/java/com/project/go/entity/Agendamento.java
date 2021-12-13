@@ -16,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.project.go.JsonConfigure.View;
 
@@ -25,6 +24,7 @@ import com.project.go.JsonConfigure.View;
 @Table(name = "agendamento")
 public class Agendamento {
     
+    @JsonView(View.Agendamento.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "agendamento_id")
@@ -68,6 +68,12 @@ public class Agendamento {
     @JsonView(View.Agendamento.class)
     @JoinColumn(name = "agendamento_status_id")
     private AgendamentoStatus agendamentoStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "configuracao_id")
+    @JsonView(View.Agendamento.class)
+    private Configuracao configuracao;
+
 
     public Long getId() {
         return this.id;
@@ -133,5 +139,12 @@ public class Agendamento {
         this.agendamentoStatus = agendamentoStatus;
     }
 
+    public Configuracao getConfiguracao() {
+        return this.configuracao;
+    }
+
+    public void setConfiguracao(Configuracao configuracao) {
+        this.configuracao = configuracao;
+    }
 
 }

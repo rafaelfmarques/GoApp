@@ -29,7 +29,7 @@ public class AgendamentoController {
     @JsonView(View.Agendamento.class)
     public Agendamento cadastrarAgendamento(@RequestBody AgendamentoDto agendamento){
         
-       return agendaService.criaAgendamento(agendamento.getData(), agendamento.getHorarioInicio(), agendamento.getObservacao(), agendamento.getUserUnico(), agendamento.getDiasSemana(), agendamento.getAgendamentoStatus());
+       return agendaService.criaAgendamento(agendamento.getData(), agendamento.getHorarioInicio(), agendamento.getObservacao(), agendamento.getUserUnico(), agendamento.getDiasSemana(), "MARCADO", "limiteUsuarios");
     }
 
     

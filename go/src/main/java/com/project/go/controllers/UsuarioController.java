@@ -48,6 +48,7 @@ public class UsuarioController {
                                     usuario.getUfNome());
     }
 
+
     @PutMapping("/atualizar/{id}")
     @JsonView(View.Usuario.class)
     public Usuario atualizaUsuario(@PathVariable("id") Long id, @RequestBody UsuarioDto usuario){
@@ -81,7 +82,7 @@ public class UsuarioController {
                                         usuario.getDataNascimento(), usuario.getTelefone(), usuario.getUserUnico(),  
                                         "ROLE_ADMIN", usuario.getBairro(), usuario.getCidade(), 
                                         usuario.getLogradouro(), usuario.getNumero(), usuario.getUfNome());
-    }    
-    
+    } 
+
 
 }

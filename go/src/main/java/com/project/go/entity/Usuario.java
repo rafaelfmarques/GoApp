@@ -25,13 +25,13 @@ import com.project.go.JsonConfigure.View;
 @Table(name = "usuario")
 public class Usuario {
     
-    @JsonView({View.Usuario.class})
+    @JsonView({View.Usuario.class, View.UsuarioDados.class})
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usuario_id")
     private Long id;
 
-    @JsonView({View.UsuarioDados.class, Usuario.class, View.Autorizacao.class, View.Agendamento.class, View.PersonalTrainer.class})
+    @JsonView({View.UsuarioDados.class, View.Usuario.class, View.Autorizacao.class, View.Agendamento.class, View.PersonalTrainer.class})
     @Column(name = "usuario_nome")
     private String nome;
 
@@ -55,6 +55,10 @@ public class Usuario {
     @Column(unique = true, name = "usuario_unico")
     private String userUnico;
 
+    @JsonView(View.TentativasLogin.class)
+    @Column(name="tentativas_login")
+    private Integer tentativasLogin;
+
     @JsonView({ View.Usuario.class, View.UsuarioDados.class })
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_end_id")
@@ -73,18 +77,9 @@ public class Usuario {
     
         )
     private Set<Autorizacao> autorizacao;
-
-    //@JsonView({ View.Usuario.class, View.Agendamento.class })
-    //@ManyToMany
-    //@JoinTable(name = "usuario_agendamento", 
-       // joinColumns = { @JoinColumn(name = "usuario_id")},
-      //  inverseJoinColumns = { @JoinColumn(name = "agendamento_id") }
-     //   )
-   // private Set<Agendamento> agendamento;
-
     
     @JsonView({ View.Autorizacao.class, View.UsuarioDados.class, View.Usuario.class })
-    @ManyToMany(mappedBy = "usuario")
+    @ManyToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Set<Agendamento> agendamento;
     
     public Long getId() {
@@ -144,6 +139,16 @@ public class Usuario {
         this.userUnico = userUnico;
     }
 
+
+    public Integer getTentativasLogin() {
+        return this.tentativasLogin;
+    }
+
+    public void setTentativasLogin(Integer tentativasLogin) {
+        this.tentativasLogin = tentativasLogin;
+    }
+
+
     public Endereco getEndereco() {
         return this.endereco;
     }
@@ -175,5 +180,6 @@ public class Usuario {
     public void setAgendamento(Set<Agendamento> agendamento) {
         this.agendamento = agendamento;
     }
+
 
 }

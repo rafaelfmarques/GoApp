@@ -8,11 +8,14 @@ import java.util.Optional;
 
 import com.project.go.entity.Agendamento;
 import com.project.go.entity.AgendamentoStatus;
+import com.project.go.entity.Configuracao;
 import com.project.go.entity.DiasSemana;
 import com.project.go.entity.Usuario;
 import com.project.go.exception.RegistroNaoEncontradoException;
+import com.project.go.exception.Exception;
 import com.project.go.repository.AgendamentoRepository;
 import com.project.go.repository.AgendamentoStatusRepository;
+import com.project.go.repository.ConfiguracaoRepository;
 import com.project.go.repository.DiasSemanaRepository;
 import com.project.go.repository.UsuarioRepository;
 
@@ -37,15 +40,31 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     @Autowired
     private AgendamentoRepository agendamentoRepo;
 
+    @Autowired
+    private ConfiguracaoRepository configRepo;
 
     @PreAuthorize("isAuthenticated()")
-    public Agendamento criaAgendamento(LocalDate Data, LocalTime horarioInicio, String observacao, String userUnico, String diasSemana, String agendamentoStatus){
+    public Agendamento criaAgendamento(LocalDate Data, LocalTime horarioInicio, String observacao, String userUnico, String diasSemana, String agendamentoStatus, String configNome){
 
         Usuario pesquisaUser = userRepo.findByUserUnico(userUnico);
         DiasSemana pesquisaDias = diasRepo.findByDiasSemana(diasSemana);
         AgendamentoStatus pesquisaAgendamentoStatus = agendamentoStatusRepo.findByAgendamentoStatus(agendamentoStatus);
+        Configuracao pesquisaConfig = configRepo.findByConfigNome(configNome);
 
-        if(pesquisaUser == null || pesquisaDias == null || pesquisaAgendamentoStatus == null || Data == null){
+        Integer pesquisaQtdAgendamentos = agendamentoRepo.buscaQtdAgendamentosIguais(Data, horarioInicio);
+        Integer pegaValor = configRepo.buscaValorPorNome();
+
+        Integer pesquisaQtdAgendamentosPorUser = agendamentoRepo.buscaQtdAgendamentosPorUsername(userUnico, horarioInicio, Data);
+
+        if (pesquisaQtdAgendamentosPorUser >= 1){
+            throw new Exception("Já existe um agendamento nesse horário.");
+        }
+    
+        if(pesquisaQtdAgendamentos >= pegaValor){
+            throw new Exception("Quantidade máxima de usuários no mesmo horário excedida.");
+        }
+
+        if(pesquisaUser == null || pesquisaDias == null || pesquisaAgendamentoStatus == null || Data == null || pesquisaConfig == null){
             throw new RegistroNaoEncontradoException("Dados inexistentes");
         }
         
@@ -61,6 +80,7 @@ public class AgendamentoServiceImpl implements AgendamentoService {
         agendamento.setObservacao(observacao);
         agendamento.setDiasSemana(pesquisaDias);
         agendamento.setAgendamentoStatus(pesquisaAgendamentoStatus);
+        agendamento.setConfiguracao(pesquisaConfig);
         agendamento.setUsuario(new HashSet<Usuario>());
         agendamento.getUsuario().add(pesquisaUser);
 
@@ -70,7 +90,7 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @Override
     public Agendamento removeAgendamento(Long id) {
         Optional<Agendamento> agendamento = agendamentoRepo.findById(id);
@@ -90,7 +110,7 @@ public class AgendamentoServiceImpl implements AgendamentoService {
 
 
     @Override
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     public List<Agendamento> buscarAgendamentoPorUsuario(String userUnico) {
         return agendamentoRepo.findByUsuario_UserUnico(userUnico);
     }
